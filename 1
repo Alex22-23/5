@@ -1,0 +1,45 @@
+import random
+import string
+from pathlib import Path
+
+def generate_random_filename(length=8):
+    characters = string.ascii_letters + string.digits
+    return ''.join(random.choice(characters) for _ in range(length)) + '.txt'
+
+def generate_random_text(length=20):
+    characters = string.ascii_letters + string.digits + ' '  # Альтернативные символы
+    return ''.join(random.choice(characters) for _ in range(length))
+
+def create_random_files(directory, num_files=10, text_length=20):
+    # Создаем путь к директории
+    dir_path = Path(directory)
+    dir_path.mkdir(parents=True, exist_ok=True)  # Создаем директорию, если её нет
+    
+    created_files = []
+    
+    # Генерируем и создаем файлы
+    for _ in range(num_files):
+        filename = generate_random_filename()
+        file_path = dir_path / filename
+        random_text = generate_random_text(text_length)
+        
+        with open(file_path, 'w') as f:
+            f.write(random_text)  # Записываем случайный текст в файл
+            
+        created_files.append(file_path)
+    
+    return created_files
+
+def main():
+    directory = 'random_files'  # Укажите нужную директорию
+    num_files = 10               # Количество создаваемых файлов
+    text_length = 50             # Длина случайного текста в файлах
+    
+    created_files = create_random_files(directory, num_files, text_length)
+
+    # Выводим абсолютные пути созданных файлов
+    for file in created_files:
+        print(file.resolve())
+
+if name == "main":
+    main()
