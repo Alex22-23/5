@@ -1,0 +1,52 @@
+import random
+from datetime import datetime, timedelta
+
+def generate_random_dates(count, start_date, end_date):
+    random_dates = []
+    for _ in range(count):
+        random_days = random.randint(0, (end_date - start_date).days)
+        random_date = start_date + timedelta(days=random_days)
+        random_dates.append(random_date)
+    return random_dates
+
+def calculate_differences(dates):
+    differences = []
+    for i in range(len(dates) - 1):
+        difference = (dates[i + 1] - dates[i]).days
+        differences.append(difference)
+    return differences
+
+def main():
+    print("Добро пожаловать в программу генерации случайных дат!")
+
+    # Запрашиваем у пользователя количество дат
+    count = int(input("Введите количество случайных дат для генерации: "))
+    
+    # Запрашиваем временной период
+    years = int(input("Введите количество лет назад от текущей даты для начала диапазона: "))
+    
+    # Задаем временные рамки
+    end_date = datetime.now()
+    start_date = end_date - timedelta(days=years * 365)
+
+    # Генерируем случайные даты
+    random_dates = generate_random_dates(count, start_date, end_date)
+
+    # Сортируем даты для корректного вычисления разницы
+    random_dates.sort()
+
+    # Выводим случайные даты
+    print("\nСлучайные даты:")
+    for date in random_dates:
+        print(date.strftime("%Y-%m-%d"))
+
+    # Вычисляем разницу в днях между соседними датами
+    differences = calculate_differences(random_dates)
+
+    # Выводим результаты
+    print("\nРазница в днях между соседними датами:")
+    for i, diff in enumerate(differences):
+        print(f"Между {random_dates[i].strftime('%Y-%m-%d')} и {random_dates[i + 1].strftime('%Y-%m-%d')} разница: {diff} дней")
+
+if name == "main":
+    main()
