@@ -1,0 +1,54 @@
+import json
+import random
+import string
+
+def generate_random_password(length=12):
+    """Генерация случайного пароля."""
+    characters = string.ascii_letters + string.digits + string.punctuation
+    password = ''.join(random.choice(characters) for _ in range(length))
+    return password
+
+def generate_user_data():
+    """Генерация данных о пользователе."""
+    names = ["John Doe", "Jane Smith", "Alice Johnson", "Bob Brown"]
+    ages = random.randint(18, 99)  # Случайный возраст от 18 до 99
+    emails = ["example@example.com", "user@domain.com", "test@test.com", "contact@service.com"]
+    
+    user_data = {
+        "name": random.choice(names),
+        "age": ages,
+        "email": random.choice(emails),
+        "password": generate_random_password()
+    }
+    
+    return user_data
+
+def generate_multiple_users(count=1):
+    """Генерация данных для нескольких пользователей."""
+    return [generate_user_data() for _ in range(count)]
+
+def save_to_file(data, filename='user_data.json'):
+    """Сохранение данных в JSON-файл."""
+    with open(filename, 'w') as json_file:
+        json.dump(data, json_file, indent=4)
+
+def read_from_file(filename='user_data.json'):
+    """Чтение данных из JSON-файла."""
+    try:
+        with open(filename, 'r') as json_file:
+            data = json.load(json_file)
+        return data
+    except FileNotFoundError:
+        print(f"Файл {filename} не найден.")
+        return None
+
+def main():
+    user_count = int(input("Введите количество пользователей для генерации: "))
+    user_data = generate_multiple_users(user_count)  # Генерация данных нескольких пользователей
+    save_to_file(user_data)                          # Сохранение данных в файл
+    retrieved_data = read_from_file()                # Чтение данных из файла
+    if retrieved_data is not None:
+        print(json.dumps(retrieved_data, indent=4))  # Вывод данных на экран
+
+if name == "main":
+    main()
